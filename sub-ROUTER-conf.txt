@@ -1,0 +1,173 @@
+!
+hostname SUB_ROUTER
+!
+boot-start-marker
+boot-end-marker
+!
+enable secret 5 $1$Iv5D$s8XXWVFcPTugBfR0Szc8a1
+!
+no aaa new-model
+memory-size iomem 5
+ip cef
+!
+!
+!
+!
+no ip domain lookup
+ip domain name tropometrics.nl
+ip auth-proxy watch-list expiry-time 0
+ip auth-proxy max-nodata-conns 3
+ip admission watch-list expiry-time 0
+ip admission max-nodata-conns 3
+!
+!
+voice-card 0
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-2467946862
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-2467946862
+ revocation-check none
+ rsakeypair TP-self-signed-2467946862
+!
+!
+crypto pki certificate chain TP-self-signed-2467946862
+ certificate self-signed 01
+  30820252 308201BB A0030201 02020101 300D0609 2A864886 F70D0101 04050030
+  31312F30 2D060355 04031326 494F532D 53656C66 2D536967 6E65642D 43657274
+  69666963 6174652D 32343637 39343638 3632301E 170D3730 30313031 30303133
+  35335A17 0D323030 31303130 30303030 305A3031 312F302D 06035504 03132649
+  4F532D53 656C662D 5369676E 65642D43 65727469 66696361 74652D32 34363739
+  34363836 3230819F 300D0609 2A864886 F70D0101 01050003 818D0030 81890281
+  8100D4A6 DEFF8DE3 C2CC994E 3D5E46A9 1C0B9457 2B90C7CA D7A0B2F6 553A44B0
+  69EBBBA3 ACFB7F94 E1340FF8 6368477B 4C5CC865 978D2F51 0F4EB4CC 946BFC6F
+  979FCA5C F672D451 5A07DF3A DB7818EC 83DFBC4A E8A82248 BE0BDF62 31EC2350
+  C20793EC EBFCD74C BD47D9E1 B3B29399 1B8610B7 85D31556 626CF50E 471C83AB
+  30D10203 010001A3 7A307830 0F060355 1D130101 FF040530 030101FF 30250603
+  551D1104 1E301C82 1A535542 5F524F55 5445522E 74726F70 6F6D6574 72696373
+  2E6E6C30 1F060355 1D230418 30168014 2889B85C AB6EFAB9 0017575E BFD96893
+  A00E1D18 301D0603 551D0E04 16041428 89B85CAB 6EFAB900 17575EBF D96893A0
+  0E1D1830 0D06092A 864886F7 0D010104 05000381 81000889 FF0E55B1 BD9D394B
+  6798767E 9C5E25C0 4F5F9A74 8607ECEC 5AFEED46 3907CAFD 07904C0F 60A04B5A
+  F0ED33B1 9DB3EA9B 0641B6B3 6C1E4980 547FDCB0 B62E68B4 CE8C0F9F AB1409A2
+  D8D964E8 116B0EFE 4378AF57 7D096494 EF637D8C 54AB8A2F 21C488E4 824AB7EC
+  FE7FFABA 145DCC80 F59BA7D6 334CADE7 98505E2C F88F
+  quit
+username cisco password 0 cisco
+!
+!
+ip ssh time-out 30
+!
+!
+!
+!
+!
+interface Tunnel10
+ ip address 10.255.255.250 255.255.255.252
+ ip ospf network point-to-multipoint
+ ip ospf 1 area 0
+ tunnel source 192.0.0.2
+ tunnel destination 198.19.0.2
+!
+interface Tunnel11
+ ip address 10.255.255.254 255.255.255.252
+ ip ospf network point-to-multipoint
+ ip ospf 1 area 0
+ tunnel source 192.0.0.2
+ tunnel destination 198.19.0.6
+!
+interface Tunnel110
+ no ip address
+!
+interface FastEthernet0/0
+ ip address 192.0.0.2 255.255.255.252
+ ip nat outside
+ ip virtual-reassembly
+ duplex auto
+ speed auto
+!
+interface FastEthernet0/1
+ ip address 10.255.254.1 255.255.255.252
+ ip nat inside
+ ip virtual-reassembly
+ duplex auto
+ speed auto
+!
+interface Serial0/3/0
+ no ip address
+ shutdown
+ no fair-queue
+ clock rate 2000000
+!
+interface Serial0/3/1
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+router ospf 1
+ router-id 127.0.2.1
+ log-adjacency-changes
+ network 10.255.254.0 0.0.0.255 area 0
+ network 10.255.255.0 0.0.0.3 area 0
+ network 10.255.255.248 0.0.0.3 area 0
+ network 10.255.255.252 0.0.0.3 area 0
+ network 10.255.255.0 0.0.0.255 area 0
+!
+ip forward-protocol nd
+ip route 0.0.0.0 0.0.0.0 192.0.0.1
+ip route 10.255.255.249 255.255.255.255 Tunnel10
+!
+!
+no ip http server
+ip http secure-server
+ip nat pool OVERLOAD_POOL 192.0.0.2 192.0.0.2 prefix-length 30
+ip nat inside source list 10 pool OVERLOAD_POOL overload
+!
+access-list 10 permit 10.2.10.0 0.0.0.255
+access-list 10 permit 10.2.20.0 0.0.0.255
+access-list 10 permit 10.2.110.0 0.0.0.255
+access-list 10 permit 10.2.120.0 0.0.0.255
+access-list 10 permit 10.2.130.0 0.0.0.255
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+banner motd ^CC NO ENTRY FOR UNAUTHORIZED INDIVIDUALS ^C
+!
+line con 0
+ password cisco
+ logging synchronous
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0
+ privilege level 15
+ password cisco
+ logging synchronous
+ login
+ transport input ssh
+line vty 1 4
+ login
+!
+scheduler allocate 20000 1000
+end

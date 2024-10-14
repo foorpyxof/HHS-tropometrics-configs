@@ -1,0 +1,229 @@
+!
+hostname SUB_MLS
+!
+boot-start-marker
+boot-end-marker
+!
+enable secret 5 $1$Fvpi$D.FGwFWa4kPZMbjYoWXrR.
+!
+username cisco password 0 cisco
+!
+!
+no aaa new-model
+system mtu routing 1500
+ip routing
+no ip domain-lookup
+ip domain-name tropometrics.nl
+ip dhcp excluded-address 10.2.10.1
+ip dhcp excluded-address 10.2.10.248 10.2.10.255
+ip dhcp excluded-address 10.2.20.1
+ip dhcp excluded-address 10.2.20.248 10.2.20.255
+ip dhcp excluded-address 10.2.30.1
+ip dhcp excluded-address 10.2.30.248 10.2.30.255
+ip dhcp excluded-address 10.2.110.1
+ip dhcp excluded-address 10.2.110.248 10.2.110.255
+ip dhcp excluded-address 10.2.120.1
+ip dhcp excluded-address 10.2.120.248 10.2.120.255
+ip dhcp excluded-address 10.2.130.1
+ip dhcp excluded-address 10.2.130.248 10.2.130.255
+!
+ip dhcp pool AdminnetCasa
+   network 10.2.10.0 255.255.255.0
+   default-router 10.2.10.1
+!
+ip dhcp pool IntranetCasa
+   network 10.2.20.0 255.255.255.0
+   default-router 10.2.20.1
+!
+ip dhcp pool CalcnetCasa
+   network 10.2.30.0 255.255.255.0
+   default-router 10.2.30.1
+!
+ip dhcp pool StaffnetMSCasa
+   network 10.2.110.0 255.255.255.0
+   default-router 10.2.110.1
+!
+ip dhcp pool StaffnetMACasa
+   network 10.2.120.0 255.255.255.0
+   default-router 10.2.120.1
+!
+ip dhcp pool StaffnetITCasa
+   network 10.2.130.0 255.255.255.0
+   default-router 10.2.130.1
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-3569405440
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-3569405440
+ revocation-check none
+ rsakeypair TP-self-signed-3569405440
+!
+!
+crypto pki certificate chain TP-self-signed-3569405440
+ certificate self-signed 01
+  3082024F 308201B8 A0030201 02020101 300D0609 2A864886 F70D0101 04050030
+  31312F30 2D060355 04031326 494F532D 53656C66 2D536967 6E65642D 43657274
+  69666963 6174652D 33353639 34303534 3430301E 170D3933 30333031 30303031
+  30315A17 0D323030 31303130 30303030 305A3031 312F302D 06035504 03132649
+  4F532D53 656C662D 5369676E 65642D43 65727469 66696361 74652D33 35363934
+  30353434 3030819F 300D0609 2A864886 F70D0101 01050003 818D0030 81890281
+  8100D331 F17A769C 4C43DE53 1DE9E0EF B585D63B 9FCA4955 E8C8C6E2 49E6F8FB
+  DB059877 587C2943 4E1E545A 72853A37 3570AC4D D3F057F0 587C3F69 D8BF09AA
+  EA4A0B52 82740FAA A62CC3B4 09159C4C 882D3CB1 0946BDEF 73A3CB6D A2995565
+  5C0116B1 AC742D00 76907CCD B8C38872 B421A692 1163A1A1 CC75BC44 B607D894
+  46B50203 010001A3 77307530 0F060355 1D130101 FF040530 030101FF 30220603
+  551D1104 1B301982 17535542 5F4D4C53 2E74726F 706F6D65 74726963 732E6E6C
+  301F0603 551D2304 18301680 14FD6A59 87E24B89 FE108216 F4E7ADDA 312E928D
+  25301D06 03551D0E 04160414 FD6A5987 E24B89FE 108216F4 E7ADDA31 2E928D25
+  300D0609 2A864886 F70D0101 04050003 8181008C 5BA6064B E6356CFD 20B18607
+  6D2F42A7 B6B1B005 6DC7DD6A 6362E961 4F904FD9 82B59EEC 396E34CA 1B4E424D
+  EC0207D6 2085BF82 F6DDDD4F 06F9574C 0076E7E4 5D4F33E8 77F99DD2 645262F5
+  60B9279D D0B7AB9C AF3D7AED 38E58B86 FD9C6D74 811DF744 EFB22F8D 5197A919
+  963FCC89 A804C612 5907EE8A 23488576 DF463C
+  quit
+!
+!
+!
+!
+spanning-tree mode rapid-pvst
+spanning-tree extend system-id
+spanning-tree vlan 10,20,110,120,130 priority 24576
+!
+vlan internal allocation policy ascending
+!
+ip ssh time-out 30
+!
+!
+!
+interface FastEthernet0/1
+ no switchport
+ ip address 10.255.254.2 255.255.255.252
+!
+interface FastEthernet0/2
+!
+interface FastEthernet0/3
+!
+interface FastEthernet0/4
+!
+interface FastEthernet0/5
+!
+interface FastEthernet0/6
+!
+interface FastEthernet0/7
+!
+interface FastEthernet0/8
+!
+interface FastEthernet0/9
+!
+interface FastEthernet0/10
+!
+interface FastEthernet0/11
+!
+interface FastEthernet0/12
+!
+interface FastEthernet0/13
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 10,20,30,110,120,130,1000
+ switchport mode trunk
+!
+interface FastEthernet0/14
+ switchport trunk encapsulation dot1q
+ switchport trunk allowed vlan 10,20,30,110,120,130,1000
+ switchport mode trunk
+!
+interface FastEthernet0/15
+!
+interface FastEthernet0/16
+!
+interface FastEthernet0/17
+!
+interface FastEthernet0/18
+!
+interface FastEthernet0/19
+!
+interface FastEthernet0/20
+!
+interface FastEthernet0/21
+!
+interface FastEthernet0/22
+!
+interface FastEthernet0/23
+!
+interface FastEthernet0/24
+!
+interface GigabitEthernet0/1
+!
+interface GigabitEthernet0/2
+!
+interface Vlan1
+ no ip address
+!
+interface Vlan10
+ ip address 10.2.10.1 255.255.255.0
+ ip access-group 101 in
+!
+interface Vlan20
+ ip address 10.2.30.1 255.255.255.0
+!
+interface Vlan110
+ ip address 10.2.110.1 255.255.255.0
+ ip access-group 111 in
+!
+interface Vlan120
+ ip address 10.2.120.1 255.255.255.0
+ ip access-group 112 in
+!
+interface Vlan130
+ ip address 10.2.130.1 255.255.255.0
+ ip access-group 113 in
+!
+router ospf 1
+ router-id 127.0.2.10
+ log-adjacency-changes
+ redistribute connected subnets
+ network 10.255.254.0 0.0.0.255 area 0
+ network 10.255.255.0 0.0.0.3 area 0
+ network 10.255.255.0 0.0.0.255 area 0
+!
+ip classless
+ip http server
+ip http secure-server
+!
+!
+access-list 101 permit icmp any any
+access-list 101 permit ip 10.2.10.0 0.0.0.255 10.0.0.0 0.255.255.255
+access-list 101 deny   ip any any
+access-list 111 permit icmp any any
+access-list 111 permit ip 10.2.110.0 0.0.0.255 10.2.20.0 0.0.0.255
+access-list 111 deny   ip 10.2.110.0 0.0.0.255 10.0.0.0 0.255.255.255
+access-list 111 permit ip any any
+access-list 112 permit icmp any any
+access-list 112 permit ip 10.2.120.0 0.0.0.255 10.2.20.0 0.0.0.255
+access-list 112 deny   ip 10.2.120.0 0.0.0.255 10.0.0.0 0.255.255.255
+access-list 112 permit ip any any
+access-list 113 permit icmp any any
+access-list 113 permit tcp 10.2.110.0 0.0.0.255 10.2.10.0 0.0.0.255 eq 22
+access-list 113 permit ip 10.2.130.0 0.0.0.255 10.2.20.0 0.0.0.255
+access-list 113 deny   ip 10.2.130.0 0.0.0.255 10.0.0.0 0.255.255.255
+access-list 113 permit ip any any
+!
+!
+banner motd ^C NO ENTRY FOR UNAUTHORIZED INDIVIDUALS ^C
+!
+line con 0
+ password cisco
+ logging synchronous
+line vty 0
+ privilege level 15
+ password cisco
+ logging synchronous
+ login
+ transport input ssh
+line vty 1 4
+ login
+line vty 5 15
+ login
+!
+end

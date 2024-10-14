@@ -1,0 +1,166 @@
+!
+hostname HOOFD_SWITCH-2
+!
+boot-start-marker
+boot-end-marker
+!
+enable secret 5 $1$FmOw$c.dTDi0ti4I/rWsu9Kr.y1
+!
+username cisco password 0 cisco
+no aaa new-model
+system mtu routing 1500
+vtp domain TMVLANS
+vtp mode off
+!
+!
+!
+!
+!
+!
+!
+no ip domain-lookup
+ip domain-name tropometrics.nl
+!
+!
+crypto pki trustpoint TP-self-signed-1076638336
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-1076638336
+ revocation-check none
+ rsakeypair TP-self-signed-1076638336
+!
+!
+crypto pki certificate chain TP-self-signed-1076638336
+ certificate self-signed 01
+  3082022B 30820194 A0030201 02020101 300D0609 2A864886 F70D0101 05050030
+  31312F30 2D060355 04031326 494F532D 53656C66 2D536967 6E65642D 43657274
+  69666963 6174652D 31303736 36333833 3336301E 170D3933 30333031 30303030
+  35365A17 0D323030 31303130 30303030 305A3031 312F302D 06035504 03132649
+  4F532D53 656C662D 5369676E 65642D43 65727469 66696361 74652D31 30373636
+  33383333 3630819F 300D0609 2A864886 F70D0101 01050003 818D0030 81890281
+  8100B2AF 0E5BDF35 61C0DB1C F621B322 8C9D32CA F76557C4 E6E8042A 14DF7E39
+  A6858107 E90331BD 55E3D226 5C127880 EA1E7B65 C30AB4FB 7A3EB7C0 12A73180
+  E3A210E1 D6EE62B0 B527410D 1CB104A3 66AFDD93 DC243274 5740F3FE B5D0AD48
+  55964804 3D575EB5 D4C9310B 03A3E242 CE065147 A46E2469 1B7775AB 743FCE11
+  9AFF0203 010001A3 53305130 0F060355 1D130101 FF040530 030101FF 301F0603
+  551D2304 18301680 147B1D4A F5EE8A41 5731310C FA4A8BB4 13E7E608 30301D06
+  03551D0E 04160414 7B1D4AF5 EE8A4157 31310CFA 4A8BB413 E7E60830 300D0609
+  2A864886 F70D0101 05050003 81810072 5D0AAFB4 46E3EE56 5E50B9DA 7032B270
+  B5974B32 7CF75D5D 66F70B43 5C221A03 C23FACBA 00DEA73E 9DE38268 C5BF27AB
+  EA2933E7 AC7C1D5C BF459EFC DD1AA63C 7CB13A7E 4584F392 16FF3AAA AC0C98D7
+  77728F36 755F5567 58C1A255 78A11ACD E2F0B2F7 F6E91ADF 0A9BFA57 022D8761
+  22A3A562 24BAEEEB 5BC6119F 5DCE27
+        quit
+!
+spanning-tree mode rapid-pvst
+spanning-tree extend system-id
+!
+vlan internal allocation policy ascending
+!
+vlan 10
+ name ADMINNET
+!
+vlan 20
+ name INTRANET
+!
+vlan 30
+ name CALCNET
+!
+vlan 110
+ name STAFFNET-MS
+!
+vlan 120
+ name STAFFNET-MA
+!
+vlan 130
+ name STAFFNET-IT
+!
+vlan 1000
+ name DMZNET
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/1
+ switchport trunk allowed vlan 10,20,30,110,120,130,1000
+ switchport mode trunk
+!
+interface FastEthernet0/2
+ switchport trunk allowed vlan 10,20,30,110,120,130,1000
+ switchport mode trunk
+!
+interface FastEthernet0/3
+!
+interface FastEthernet0/4
+!
+interface FastEthernet0/5
+!
+interface FastEthernet0/6
+!
+interface FastEthernet0/7
+!
+interface FastEthernet0/8
+!
+interface FastEthernet0/9
+!
+interface FastEthernet0/10
+!
+interface FastEthernet0/11
+!
+interface FastEthernet0/12
+!
+interface FastEthernet0/13
+!
+interface FastEthernet0/14
+!
+interface FastEthernet0/15
+!
+interface FastEthernet0/16
+!
+interface FastEthernet0/17
+!
+interface FastEthernet0/18
+!
+interface FastEthernet0/19
+!
+interface FastEthernet0/20
+!
+interface FastEthernet0/21
+!
+interface FastEthernet0/22
+!
+interface FastEthernet0/23
+!
+interface FastEthernet0/24
+!
+interface GigabitEthernet0/1
+!
+interface GigabitEthernet0/2
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+ip http server
+ip http secure-server
+ip ssh time-out 30
+!
+no vstack
+banner motd ^C NO ENTRY FOR UNAUTHORIZED INDIVIDUALS ^C
+!
+line con 0
+ password cisco
+ logging synchronous
+line vty 0
+ privilege level 15
+ password cisco
+ logging synchronous
+ login
+ transport input ssh
+line vty 1 4
+ login
+line vty 5 15
+ login
+!
+end

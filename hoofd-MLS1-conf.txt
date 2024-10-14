@@ -1,0 +1,185 @@
+!
+hostname MLS1
+!
+enable secret 0 cisco
+!
+username cisco password 0 cisco
+no aaa new-model
+!
+ip routing
+no ip domain lookup
+ip domain name tropometrics.nl
+!
+ip dhcp excluded-address 10.1.10.1
+ip dhcp excluded-address 10.1.10.248 10.1.10.255
+ip dhcp excluded-address 10.1.20.1
+ip dhcp excluded-address 10.1.20.248 10.1.20.255
+ip dhcp excluded-address 10.1.30.1
+ip dhcp excluded-address 10.1.30.248 10.1.30.255
+ip dhcp excluded-address 10.1.110.1
+ip dhcp excluded-address 10.1.110.248 10.1.110.255
+ip dhcp excluded-address 10.1.120.1
+ip dhcp excluded-address 10.1.120.248 10.1.120.255
+ip dhcp excluded-address 10.1.130.1
+ip dhcp excluded-address 10.1.130.248 10.1.130.255
+!
+ip dhcp pool AdminnetDelft
+ network 10.1.10.0 255.255.255.0
+ default-router 10.1.10.1
+!
+ip dhcp pool IntranetDelft
+ network 10.1.20.0 255.255.255.0
+ default-router 10.1.20.1
+!
+ip dhcp pool CalcnetDelft
+ network 10.1.30.0 255.255.255.0
+ default-router 10.1.30.1
+!
+ip dhcp pool StaffnetMSDelft
+ network 10.1.110.0 255.255.255.0
+ default-router 10.1.110.1
+!
+ip dhcp pool StaffnetMADelft
+ network 10.1.120.0 255.255.255.0
+ default-router 10.1.120.1
+!
+ip dhcp pool StaffnetITDelft
+ network 10.1.130.0 255.255.255.0
+ default-router 10.1.130.1
+!
+qos queue-softmax-multiplier 100
+!
+spanning-tree mode rapid-pvst
+spanning-tree extend system-id
+spanning-tree vlan 10,30,120,1000 priority 24576
+spanning-tree vlan 20,110,130 priority 28672
+!
+redundancy
+ mode sso
+!
+interface GigabitEthernet1/0/1
+ no switchport
+ ip address 10.255.255.2 255.255.255.252
+!
+interface GigabitEthernet1/0/2
+ no switchport
+ ip address 10.255.255.14 255.255.255.252
+!
+interface GigabitEthernet1/0/3
+ switchport trunk allowed vlan 10,20,30,110,120,130,1000
+ switchport mode trunk
+!
+interface GigabitEthernet1/0/13
+ switchport trunk allowed vlan 10,20,30,110,120,130,1000
+ switchport mode trunk
+!
+interface GigabitEthernet1/0/14
+ switchport trunk allowed vlan 10,20,30,110,120,130,1000
+ switchport mode trunk
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+interface Vlan10
+ ip address 10.1.10.254 255.255.255.0
+ ip access-group 101 in
+ standby 10 ip 10.1.10.1
+ standby 10 priority 255
+ standby 10 preempt delay minimum 5
+!
+interface Vlan20
+ ip address 10.1.20.253 255.255.255.0
+ standby 20 ip 10.1.20.1
+ standby 20 priority 150
+ standby 20 preempt delay minimum 5
+!
+interface Vlan30
+ ip address 10.1.30.254 255.255.255.0
+ ip access-group 103 in
+ standby 30 ip 10.1.30.1
+ standby 30 priority 255
+ standby 30 preempt delay minimum 5
+!
+interface Vlan110
+ ip address 10.1.110.253 255.255.255.0
+ ip access-group 111 in
+ standby 110 ip 10.1.110.1
+ standby 110 priority 150
+ standby 110 preempt delay minimum 5
+!
+interface Vlan120
+ ip address 10.1.120.254 255.255.255.0
+ ip access-group 112 in
+ standby 120 ip 10.1.120.1
+ standby 120 priority 255
+ standby 120 preempt delay minimum 5
+!
+interface Vlan130
+ ip address 10.1.130.253 255.255.255.0
+ ip access-group 113 in
+ standby 130 ip 10.1.130.1
+ standby 130 priority 150
+ standby 130 preempt delay minimum 5
+!
+interface Vlan1000
+ ip address 10.1.255.254 255.255.255.0
+ standby 255 ip 10.1.255.1
+ standby 255 priority 255
+ standby 255 preempt delay minimum 5
+!
+router ospf 1
+ router-id 127.0.1.10
+ redistribute connected subnets
+ network 10.255.255.0 0.0.0.255 area 0
+!
+ip ssh time-out 30
+!
+access-list 101 permit icmp any any
+access-list 101 permit ip 10.1.10.0 0.0.0.255 10.0.0.0 0.255.255.255
+access-list 101 deny   ip any any
+access-list 103 permit icmp any any
+access-list 103 permit tcp 10.1.30.0 0.0.0.255 10.1.20.0 0.0.0.255 range ftp-data ftp
+access-list 103 permit tcp 10.1.30.0 0.0.0.255 10.2.20.0 0.0.0.255 range ftp-data ftp
+access-list 103 permit tcp 10.1.30.0 0.0.0.255 10.3.20.0 0.0.0.255 range ftp-data ftp
+access-list 103 permit tcp 10.1.30.0 0.0.0.255 10.4.20.0 0.0.0.255 range ftp-data ftp
+access-list 103 permit tcp 10.1.30.0 0.0.0.255 10.5.20.0 0.0.0.255 range ftp-data ftp
+access-list 103 permit tcp 10.1.30.0 0.0.0.255 10.6.20.0 0.0.0.255 range ftp-data ftp
+access-list 103 deny   ip any any
+access-list 111 permit icmp any any
+access-list 111 permit ip 10.1.110.0 0.0.0.255 10.1.20.0 0.0.0.255
+access-list 111 deny   ip 10.1.110.0 0.0.0.255 10.0.0.0 0.255.255.255
+access-list 111 permit ip any any
+access-list 112 permit icmp any any
+access-list 112 permit ip 10.1.120.0 0.0.0.255 10.1.20.0 0.0.0.255
+access-list 112 deny   ip 10.1.120.0 0.0.0.255 10.0.0.0 0.255.255.255
+access-list 112 permit ip any any
+access-list 113 permit icmp any any
+access-list 113 permit tcp 10.1.110.0 0.0.0.255 10.1.10.0 0.0.0.255 eq 22
+access-list 113 permit ip 10.1.130.0 0.0.0.255 10.1.20.0 0.0.0.255
+access-list 113 deny   ip 10.1.130.0 0.0.0.255 10.0.0.0 0.255.255.255
+access-list 113 permit ip any any
+!
+banner motd ^C NO ENTRY FOR UNAUTHORIZED INDIVIDUALS ^C
+!
+line con 0
+ password cisco
+ logging synchronous
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0
+ privilege level 15
+ password cisco
+ logging synchronous
+ login
+ transport input ssh
+line vty 1 4
+ password cisco
+ login
+line vty 5 15
+ password cisco
+ login
+!
+ap group default-group
+end
