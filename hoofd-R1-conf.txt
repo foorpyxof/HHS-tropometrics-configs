@@ -1,96 +1,18 @@
 !
 hostname R1-HOOFDLOCATIE
 !
-boot-start-marker
-boot-end-marker
-!
-!
-vrf definition Mgmt-intf
- !
- address-family ipv4
- exit-address-family
- !
- address-family ipv6
- exit-address-family
-!
-enable secret 5 $1$DrRY$n23ULnidJPuquphl/19CQ1
-!
+enable secret 0 cisco
 no aaa new-model
 !
 no ip domain lookup
 ip domain name tropometrics.nl
-ip admission watch-list expiry-time 0
-!
-!
-!
-!
-!
-!
-!
-!
-!
-!
-subscriber templating
-multilink bundle-name authenticated
-!
-!
-!
-crypto pki trustpoint TP-self-signed-2146033950
- enrollment selfsigned
- subject-name cn=IOS-Self-Signed-Certificate-2146033950
- revocation-check none
- rsakeypair TP-self-signed-2146033950
-!
-!
-crypto pki certificate chain TP-self-signed-2146033950
- certificate self-signed 01
-  30820330 30820218 A0030201 02020101 300D0609 2A864886 F70D0101 05050030
-  31312F30 2D060355 04031326 494F532D 53656C66 2D536967 6E65642D 43657274
-  69666963 6174652D 32313436 30333339 3530301E 170D3234 30393233 31373035
-  31315A17 0D333030 31303130 30303030 305A3031 312F302D 06035504 03132649
-  4F532D53 656C662D 5369676E 65642D43 65727469 66696361 74652D32 31343630
-  33333935 30308201 22300D06 092A8648 86F70D01 01010500 0382010F 00308201
-  0A028201 01008A4B 6D927355 C7F5E0B5 00287EB0 8A0D20F3 1E41631A 7304BF8D
-  142BB3F3 8A789459 7AD02285 B37148F1 32EA4017 A5C43B8B 3AF79041 B0C45492
-  90892142 20E8D320 929E5412 842A3E70 376F3604 97427C35 27A411A6 FCF5C968
-  9F9716D1 3A240A48 8C886A4F 90512199 A2DED0BF 2C849930 54E6555C ADC776C2
-  8ED3160F 72D97274 54B5D8A1 91BCFB74 D44F069C 951AE0C2 D34135B4 6580B1BD
-  D4E58A59 41D8EA9C 353A5271 AAE6E361 0966BF04 019C96E0 6522FB2B B9B094DC
-  A73EBA97 869FA406 EB18D0AD 1CCC766F 1C4F6647 A5B74B50 AF4E40DD 4F01F0EE
-  548EE433 820A3825 2EC41746 8E61D98F EAF1141E 35CC021D E98F3670 7133AA28
-  B002C873 45A90203 010001A3 53305130 0F060355 1D130101 FF040530 030101FF
-  301F0603 551D2304 18301680 147C84EC 02551DE3 B4F6A18C C2C9CFE5 F5772556
-  C3301D06 03551D0E 04160414 7C84EC02 551DE3B4 F6A18CC2 C9CFE5F5 772556C3
-  300D0609 2A864886 F70D0101 05050003 82010100 83DB6414 A14E2B83 822D7C86
-  9D1F8ADD 238658AD 2C1D2FB8 35751E27 3C2AE1F0 8C1CC319 659676F2 64FC90AD
-  9ECADBE6 848AF936 EAF2FA9C ECEC8738 3DADE657 1F0A5DF5 59AC2AD8 BF8DE9FD
-  A842B6ED BD0DDB2D 3EA3187A E05A6EF9 2A160679 C6E758E1 F06284DA D0A50604
-  6C3C1DA8 60D7ABFF E6AD23C3 337D8527 5D38539A E4CAB6ED FDB82EC3 D66C7946
-  0E475415 01C7A277 4639686F 36C31340 5A3DEAD0 8F2EB0B1 3BBBC131 2ACFB209
-  168D1FFD E793647C B51720A5 69D7BE25 47BE386D 9BF6C2D0 09B8EDC0 DAD636A5
-  49160EF9 06451E38 17F4BF7F 5CA00586 51498E7C 81C501D4 B996936F 6A305B96
-  5976B4FC 815002FE 532E79E5 7742C9D8 059A999E
-        quit
-!
-license udi pid ISR4331/K9 sn FDO22430KMN
-no license smart enable
-diagnostic bootup level minimal
-!
-spanning-tree extend system-id
-!
-!
+crypto key generate rsa
+1024
 !
 username cisco password 0 cisco
 !
 redundancy
  mode none
-!
-!
-!
-!
-!
-!
-!
 !
 interface Tunnel1
  ip address 10.255.255.249 255.255.255.252
@@ -102,33 +24,17 @@ interface Tunnel1
 interface GigabitEthernet0/0/0
  ip address 10.255.255.1 255.255.255.252
  ip nat inside
- negotiation auto
 !
 interface GigabitEthernet0/0/1
  ip address 10.255.255.9 255.255.255.252
  ip nat inside
- negotiation auto
-!
-interface GigabitEthernet0/0/2
- no ip address
- negotiation auto
 !
 interface Serial0/1/0
  ip address 198.19.0.2 255.255.255.252
  ip nat outside
 !
-interface Serial0/1/1
- no ip address
-!
-interface GigabitEthernet0
- vrf forwarding Mgmt-intf
- no ip address
- negotiation auto
-!
 router ospf 1
  router-id 127.0.1.1
- network 10.255.255.248 0.0.0.3 area 0
- network 10.255.255.252 0.0.0.3 area 0
  network 10.255.255.0 0.0.0.255 area 0
  default-information originate
 !
@@ -149,12 +55,7 @@ access-list 10 permit 10.1.110.0 0.0.0.255
 access-list 10 permit 10.1.120.0 0.0.0.255
 access-list 10 permit 10.1.130.0 0.0.0.255
 !
-!
-!
-!
-control-plane
-!
-banner motd ^CC NO ENTRY FOR UNAUTHORIZED INDIVIDUALS ^C
+banner motd # NO ENTRY FOR UNAUTHORIZED INDIVIDUALS #
 !
 line con 0
  password cisco
@@ -170,11 +71,6 @@ line vty 0
  login
  transport input ssh
 line vty 1 4
+ password cisco
  login
-!
-!
-!
-!
-!
-!
 end

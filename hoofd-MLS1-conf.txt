@@ -7,8 +7,10 @@ username cisco password 0 cisco
 no aaa new-model
 !
 ip routing
-no ip domain lookup
+no ip domain-lookup
 ip domain name tropometrics.nl
+crypto key generate rsa
+1024
 !
 ip dhcp excluded-address 10.1.10.1
 ip dhcp excluded-address 10.1.10.248 10.1.10.255
@@ -50,7 +52,6 @@ ip dhcp pool StaffnetITDelft
 qos queue-softmax-multiplier 100
 !
 spanning-tree mode rapid-pvst
-spanning-tree extend system-id
 spanning-tree vlan 10,30,120,1000 priority 24576
 spanning-tree vlan 20,110,130 priority 28672
 !
@@ -66,14 +67,17 @@ interface GigabitEthernet1/0/2
  ip address 10.255.255.14 255.255.255.252
 !
 interface GigabitEthernet1/0/3
+ switchport trunk encapsulation dot1q
  switchport trunk allowed vlan 10,20,30,110,120,130,1000
  switchport mode trunk
 !
 interface GigabitEthernet1/0/13
+ switchport trunk encapsulation dot1q
  switchport trunk allowed vlan 10,20,30,110,120,130,1000
  switchport mode trunk
 !
 interface GigabitEthernet1/0/14
+ switchport trunk encapsulation dot1q
  switchport trunk allowed vlan 10,20,30,110,120,130,1000
  switchport mode trunk
 !

@@ -1,60 +1,20 @@
 !
 hostname HOOFD_SWITCH-1
 !
-boot-start-marker
-boot-end-marker
-!
-enable secret 5 $1$q69I$4G.ownOuSqx2z701TiZLA0
+enable secret 0 cisco
 !
 username cisco password 0 cisco
 no aaa new-model
-system mtu routing 1500
-vtp domain TropoMetrics
-vtp mode off
-!
-!
-!
-!
-!
-!
 !
 no ip domain-lookup
 ip domain-name tropometrics.nl
+crypto key generate rsa
+1024
 !
-!
-crypto pki trustpoint TP-self-signed-4274790656
- enrollment selfsigned
- subject-name cn=IOS-Self-Signed-Certificate-4274790656
- revocation-check none
- rsakeypair TP-self-signed-4274790656
-!
-!
-crypto pki certificate chain TP-self-signed-4274790656
- certificate self-signed 01
-  3082022B 30820194 A0030201 02020101 300D0609 2A864886 F70D0101 05050030
-  31312F30 2D060355 04031326 494F532D 53656C66 2D536967 6E65642D 43657274
-  69666963 6174652D 34323734 37393036 3536301E 170D3933 30333031 30303031
-  30305A17 0D323030 31303130 30303030 305A3031 312F302D 06035504 03132649
-  4F532D53 656C662D 5369676E 65642D43 65727469 66696361 74652D34 32373437
-  39303635 3630819F 300D0609 2A864886 F70D0101 01050003 818D0030 81890281
-  81008EEC F34AF630 9192DFDE 74965E1F 523957DC 46EC608F 26A28009 CADE65AD
-  D6A57039 24980F68 CAE3C0DE FFBE414E 0D448DAF 7A253544 FA75478F 1B2AB524
-  4EC945A8 127CA73A 0163E246 6E11D4B8 43684DAD 7C3C09AD 095DF3D5 7DAA0FDB
-  6FAB9273 E1184F2C F1CB6364 E1992DE2 FC9F9E78 848B8901 D90FA353 89952983
-  59910203 010001A3 53305130 0F060355 1D130101 FF040530 030101FF 301F0603
-  551D2304 18301680 14866CE8 F4625489 93B52FD0 56570657 3B3E46BF 98301D06
-  03551D0E 04160414 866CE8F4 62548993 B52FD056 5706573B 3E46BF98 300D0609
-  2A864886 F70D0101 05050003 8181001C AD441462 32F2B889 1F4F3DBA 270A5C24
-  2514B821 A0D32727 AFD3A77D D7964991 93660F72 DB903CE6 9564B692 676CDF1A
-  A1F3875C 336C2B6A 7DFB6C8A 07C24774 1F1C76FE 747CC3B2 0767A753 6821F529
-  7FB6D073 68ED8FCA 9D459F42 BD4931CA BF9F6130 13C6DCF8 E28487CA 55922A8D
-  A0CD1DD9 8969D126 01EAF8A8 35F81C
-        quit
+vtp domain TropoMetrics
+vtp mode off
 !
 spanning-tree mode rapid-pvst
-spanning-tree extend system-id
-!
-vlan internal allocation policy ascending
 !
 vlan 10
  name ADMINNET
@@ -77,11 +37,6 @@ vlan 130
 vlan 1000
  name DMZNET
 !
-!
-!
-!
-!
-!
 interface FastEthernet0/1
  switchport trunk allowed vlan 10,20,30,110,120,130,1000
  switchport mode trunk
@@ -89,22 +44,6 @@ interface FastEthernet0/1
 interface FastEthernet0/2
  switchport trunk allowed vlan 10,20,30,110,120,130,1000
  switchport mode trunk
-!
-interface FastEthernet0/3
-!
-interface FastEthernet0/4
-!
-interface FastEthernet0/5
-!
-interface FastEthernet0/6
-!
-interface FastEthernet0/7
-!
-interface FastEthernet0/8
-!
-interface FastEthernet0/9
-!
-interface FastEthernet0/10
 !
 interface FastEthernet0/11
  switchport access vlan 10
@@ -114,44 +53,10 @@ interface FastEthernet0/12
  switchport access vlan 20
  switchport mode access
 !
-interface FastEthernet0/13
-!
-interface FastEthernet0/14
-!
-interface FastEthernet0/15
-!
-interface FastEthernet0/16
-!
-interface FastEthernet0/17
-!
-interface FastEthernet0/18
-!
-interface FastEthernet0/19
-!
-interface FastEthernet0/20
-!
-interface FastEthernet0/21
-!
-interface FastEthernet0/22
-!
-interface FastEthernet0/23
-!
-interface FastEthernet0/24
-!
-interface GigabitEthernet0/1
-!
-interface GigabitEthernet0/2
-!
-interface Vlan1
- no ip address
- shutdown
-!
-ip http server
-ip http secure-server
 ip ssh time-out 30
 !
 no vstack
-banner motd ^C NO ENTRY FOR UNAUTHORIZED INDIVIDUALS ^C
+banner motd # NO ENTRY FOR UNAUTHORIZED INDIVIDUALS #
 !
 line con 0
  password cisco
@@ -163,8 +68,9 @@ line vty 0
  login
  transport input ssh
 line vty 1 4
+ password cisco
  login
 line vty 5 15
+ password cisco
  login
-!
 end

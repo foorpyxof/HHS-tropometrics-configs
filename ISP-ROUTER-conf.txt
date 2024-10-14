@@ -1,116 +1,40 @@
 !
 hostname ISP
 !
-boot-start-marker
-boot-end-marker
-!
-!
-vrf definition Mgmt-intf
- !
- address-family ipv4
- exit-address-family
- !
- address-family ipv6
- exit-address-family
-!
-enable secret 5 $1$h88s$6Aj5tKgC8oivye4r02ViX0
-!
-aaa new-model
-!
-!
-!
-!
-!
-!
-!
-!
-aaa session-id common
+enable secret 0 cisco
+no aaa new-model
 !
 no ip domain lookup
 ip domain name tropometrics.nl
-ip admission watch-list expiry-time 0
-!
-!
-!
-!
-!
-!
-!
-!
-!
-!
-subscriber templating
-multilink bundle-name authenticated
-!
-!
-!
-!
-!
-license udi pid ISR4331/K9 sn FDO22371VTV
-no license smart enable
-diagnostic bootup level minimal
-!
-spanning-tree extend system-id
-!
-!
+crypto key generate rsa
+1024
 !
 username cisco password 0 cisco
 !
 redundancy
  mode none
 !
-!
-!
-!
-!
-!
-!
-!
 interface GigabitEthernet0/0/0
  ip address 192.0.0.1 255.255.255.252
  negotiation auto
 !
-interface GigabitEthernet0/0/1
- no ip address
- negotiation auto
-!
-interface GigabitEthernet0/0/2
- no ip address
- negotiation auto
-!
 interface Serial0/1/0
- description "To Hoofd Locatie Router 1"
+ description "To hoofdlocatie router 1"
  ip address 198.19.0.1 255.255.255.252
  clock rate 64000
 !
 interface Serial0/1/1
- description "To  hoofd locatie router 2"
+ description "To hoofdlocatie router 2"
  ip address 198.19.0.5 255.255.255.252
  clock rate 64000
 !
-interface GigabitEthernet0
- vrf forwarding Mgmt-intf
- no ip address
- negotiation auto
-!
-ip forward-protocol nd
-no ip http server
-ip http secure-server
 ip route 192.0.0.0 255.255.255.0 192.0.0.2
 ip route 198.19.0.0 255.255.255.0 198.19.0.2
 ip route 198.19.0.0 255.255.255.0 198.19.0.6
 !
 ip ssh time-out 30
 !
-!
-!
-!
-!
-!
-!
-control-plane
-!
-banner motd ^C FUCK OFF YOU BIRCH ^C
+banner motd # ERM YOU'RE NOT SUPPOSED TO BE HERE :O #
 !
 line con 0
  password cisco
@@ -125,10 +49,6 @@ line vty 0
  logging synchronous
  transport input ssh
 line vty 1 4
-!
-!
-!
-!
-!
-!
+ password cisco
+ login
 end

@@ -9,11 +9,12 @@ no aaa new-model
 ip routing
 no ip domain-lookup
 ip domain-name tropometrics.nl
+crypto key generate rsa
+1024
 !
 qos queue-softmax-multiplier 100
 !
 spanning-tree mode rapid-pvst
-spanning-tree extend system-id
 spanning-tree vlan 10,30,120,1000 priority 28672
 spanning-tree vlan 20,110,130 priority 24576
 !
@@ -29,14 +30,17 @@ interface GigabitEthernet1/0/2
  ip address 10.255.255.10 255.255.255.252
 !
 interface GigabitEthernet1/0/3
+ switchport trunk encapsulation dot1q
  switchport trunk allowed vlan 10,20,30,110,120,130,1000
  switchport mode trunk
 !
 interface GigabitEthernet1/0/13
+ switchport trunk encapsulation dot1q
  switchport trunk allowed vlan 10,20,30,110,120,130,1000
  switchport mode trunk
 !
 interface GigabitEthernet1/0/14
+ switchport trunk encapsulation dot1q
  switchport trunk allowed vlan 10,20,30,110,120,130,1000
  switchport mode trunk
 !

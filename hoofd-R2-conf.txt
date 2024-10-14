@@ -1,61 +1,18 @@
 !
 hostname R2-HOOFDLOCATIE
 !
-boot-start-marker
-boot-end-marker
-!
-!
-vrf definition Mgmt-intf
- !
- address-family ipv4
- exit-address-family
- !
- address-family ipv6
- exit-address-family
-!
-enable secret 5 $1$Fb1i$O.z0TJCnB0nCqr6FaWKxC/
-!
+enable secret 0 cisco
 no aaa new-model
 !
 no ip domain lookup
 ip domain name tropometrics.nl
-ip admission watch-list expiry-time 0
-!
-!
-!
-!
-!
-!
-!
-!
-!
-!
-subscriber templating
-multilink bundle-name authenticated
-!
-!
-!
-!
-!
-license udi pid ISR4331/K9 sn FDO22430LYT
-no license smart enable
-diagnostic bootup level minimal
-!
-spanning-tree extend system-id
-!
-!
+crypto key generate rsa
+1024
 !
 username cisco password 0 cisco
 !
 redundancy
  mode none
-!
-!
-!
-!
-!
-!
-!
 !
 interface Tunnel1
  ip address 10.255.255.253 255.255.255.252
@@ -65,30 +22,16 @@ interface Tunnel1
  tunnel destination 192.0.0.2
 !
 interface GigabitEthernet0/0/0
- no ip address
+ ip address 10.255.255.5 255.255.255.252
  ip nat inside
- negotiation auto
 !
 interface GigabitEthernet0/0/1
- no ip address
+ ip address 10.255.255.13 255.255.255.252
  ip nat inside
- negotiation auto
-!
-interface GigabitEthernet0/0/2
- no ip address
- negotiation auto
 !
 interface Serial0/1/0
  ip address 198.19.0.6 255.255.255.252
  ip nat outside
-!
-interface Serial0/1/1
- no ip address
-!
-interface GigabitEthernet0
- vrf forwarding Mgmt-intf
- no ip address
- negotiation auto
 !
 router ospf 1
  router-id 127.0.1.69
@@ -112,12 +55,7 @@ access-list 10 permit 10.1.110.0 0.0.0.255
 access-list 10 permit 10.1.120.0 0.0.0.255
 access-list 10 permit 10.1.130.0 0.0.0.255
 !
-!
-!
-!
-control-plane
-!
-banner motd ^C NO ENTRY FOR UNAUTHORIZED INDIVIDUALS ^C
+banner motd # NO ENTRY FOR UNAUTHORIZED INDIVIDUALS #
 !
 line con 0
  password cisco
@@ -133,11 +71,6 @@ line vty 0
  login
  transport input ssh
 line vty 1 4
+ password cisco
  login
-!
-!
-!
-!
-!
-!
 end

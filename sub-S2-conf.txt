@@ -1,211 +1,48 @@
 !
 hostname SUB-SWITCH_2
 !
-boot-start-marker
-boot-end-marker
-!
-enable secret 5 $1$9NJE$ZZOK3/qZ3pjp4h7Uyb2YG.
+enable secret 0 cisco
 !
 username cisco password 0 cisco
-!
-!
 no aaa new-model
-system mtu routing 1500
-vtp mode off
+!
 no ip domain-lookup
 ip domain-name tropometrics.nl
+crypto key generate rsa
+1024
 !
-!
-!
-!
-crypto pki trustpoint TP-self-signed-3569152256
- enrollment selfsigned
- subject-name cn=IOS-Self-Signed-Certificate-3569152256
- revocation-check none
- rsakeypair TP-self-signed-3569152256
-!
-!
-crypto pki certificate chain TP-self-signed-3569152256
- certificate self-signed 01
-  30820254 308201BD A0030201 02020101 300D0609 2A864886 F70D0101 04050030
-  31312F30 2D060355 04031326 494F532D 53656C66 2D536967 6E65642D 43657274
-  69666963 6174652D 33353639 31353232 3536301E 170D3933 30333031 30303031
-  35375A17 0D323030 31303130 30303030 305A3031 312F302D 06035504 03132649
-  4F532D53 656C662D 5369676E 65642D43 65727469 66696361 74652D33 35363931
-  35323235 3630819F 300D0609 2A864886 F70D0101 01050003 818D0030 81890281
-  8100B55F 5EE37F78 05FAB64D 9DFFD027 797BED73 288EFF70 C274711C 06B102CD
-  1433580C 61B91331 4A691731 9E5ABCD4 F47676A3 E155FE9F 3C1359C7 62C90A82
-  22C2F10E 539A98E3 197052CF 6AACCB4D 7AAD6D51 A408AC11 7F0164EE EDBA35C1
-  CEEDF71B 27D99B1B BFE2803B 3AB9DFB8 50D41D90 88F4B5E9 19193AEA 074077AD
-  191F0203 010001A3 7C307A30 0F060355 1D130101 FF040530 030101FF 30270603
-  551D1104 20301E82 1C535542 2D535749 5443485F 322E7472 6F706F6D 65747269
-  63732E6E 6C301F06 03551D23 04183016 8014FDB8 2A288666 E903105B 09EC0ECD
-  CEE5FC24 C12E301D 0603551D 0E041604 14FDB82A 288666E9 03105B09 EC0ECDCE
-  E5FC24C1 2E300D06 092A8648 86F70D01 01040500 03818100 67DBD8AB DF227970
-  36479E13 D64B99B8 3CC81842 377F46A9 5EDA4A27 334E5157 8DB6020B 6567F02A
-  47766C09 DB283931 23023BDE 48ADF679 569EE3C4 F3A0A417 D00E6697 94F7AB8A
-  92987A1C 8872C168 D4034CCD 65187F5E 729C191E EB1F54E1 1D3B97B0 017B12BD
-  36F2386E A2B095D3 3E45A6F5 D5F51A65 973DAEA6 7BE3A8EB
-  quit
-!
-!
-!
+vtp domain TropoMetrics
+vtp mode off
 !
 spanning-tree mode rapid-pvst
-spanning-tree extend system-id
-!
-vlan internal allocation policy ascending
-!
-vlan 5
- name Management
 !
 vlan 10
- name Sales
-!
-vlan 15
- name Quarantine
+ name ADMINNET
 !
 vlan 20
- name Marketing
-!
-vlan 25
- name Voice
+ name INTRANET
 !
 vlan 30
- name HRM
-!
-vlan 35
- name Guest
-!
-vlan 40
- name Investors
-!
-vlan 45
- name Server
-!
-vlan 50
- name Partners
-!
-vlan 55
- name Unused
-!
-vlan 60
- name ResearchDevelopment
-!
-vlan 65
- name Native
-!
-vlan 70
- name Purchasing
-!
-vlan 80
- name Production
-!
-vlan 90
- name SupplyChain
-!
-vlan 100
- name QualityAssurance
+ name CALCNET
 !
 vlan 110
- name Finance
+ name STAFFNET-MS
 !
 vlan 120
- name Accounting
+ name STAFFNET-MA
 !
 vlan 130
- name Legal
-!
-vlan 140
- name Maintenance
-!
-vlan 150
- name Security
-!
-vlan 160
- name Administration
-!
-vlan 170
- name IT
-!
-vlan 180
- name Facility
-!
-vlan 190
- name BoD
+ name STAFFNET-IT
 !
 ip ssh time-out 30
-!
-!
 !
 interface FastEthernet0/1
  switchport trunk encapsulation dot1q
  switchport trunk allowed vlan 10,110,120
  switchport mode trunk
 !
-interface FastEthernet0/2
-!
-interface FastEthernet0/3
-!
-interface FastEthernet0/4
-!
-interface FastEthernet0/5
-!
-interface FastEthernet0/6
-!
-interface FastEthernet0/7
-!
-interface FastEthernet0/8
-!
-interface FastEthernet0/9
-!
-interface FastEthernet0/10
-!
-interface FastEthernet0/11
-!
-interface FastEthernet0/12
-!
-interface FastEthernet0/13
-!
-interface FastEthernet0/14
-!
-interface FastEthernet0/15
-!
-interface FastEthernet0/16
-!
-interface FastEthernet0/17
-!
-interface FastEthernet0/18
-!
-interface FastEthernet0/19
-!
-interface FastEthernet0/20
-!
-interface FastEthernet0/21
-!
-interface FastEthernet0/22
-!
-interface FastEthernet0/23
-!
-interface FastEthernet0/24
-!
-interface GigabitEthernet0/1
-!
-interface GigabitEthernet0/2
-!
-interface Vlan1
- no ip address
- shutdown
-!
-ip classless
-ip http server
-ip http secure-server
-!
-!
-!
-!
 no vstack
-banner motd ^CC NO ENTRY FOR UNAUTHORIZED INDIVIDUALS ^C
+banner motd # NO ENTRY FOR UNAUTHORIZED INDIVIDUALS #
 !
 line con 0
  password cisco
@@ -217,8 +54,9 @@ line vty 0
  login
  transport input ssh
 line vty 1 4
+ password cisco
  login
 line vty 5 15
+ password cisco
  login
-!
 end
