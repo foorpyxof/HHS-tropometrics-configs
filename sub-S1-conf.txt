@@ -49,6 +49,10 @@ interface FastEthernet0/12
  switchport access vlan 20
  switchport mode access
 !
+interface FastEthernet0/24
+ switchport access vlan 110
+ switchport mode access
+!
 no vstack
 banner motd # NO ENTRY FOR UNAUTHORIZED INDIVIDUALS #
 !
