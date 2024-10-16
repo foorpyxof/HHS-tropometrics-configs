@@ -31,6 +31,7 @@ interface GigabitEthernet0/0/1
 !
 interface Serial0/1/0
  ip address 198.19.0.2 255.255.255.252
+ ip access-group 199 in
  ip nat outside
 !
 router ospf 1
@@ -54,6 +55,11 @@ access-list 10 permit 10.1.30.0 0.0.0.255
 access-list 10 permit 10.1.110.0 0.0.0.255
 access-list 10 permit 10.1.120.0 0.0.0.255
 access-list 10 permit 10.1.130.0 0.0.0.255
+access-list 199 permit ip any 198.19.0.32 0.0.0.31
+access-list 199 permit gre any any
+access-list 199 permit icmp any any
+access-list 199 permit tcp any any established
+access-list 199 deny ip any any
 !
 banner motd # NO ENTRY FOR UNAUTHORIZED INDIVIDUALS #
 !

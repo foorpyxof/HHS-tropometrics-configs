@@ -29,6 +29,7 @@ interface Tunnel11
 !
 interface FastEthernet0/0
  ip address 192.0.0.2 255.255.255.252
+ ip access-group 199 in
  ip nat outside
  ip virtual-reassembly
  duplex auto
@@ -59,6 +60,10 @@ access-list 10 permit 10.2.20.0 0.0.0.255
 access-list 10 permit 10.2.110.0 0.0.0.255
 access-list 10 permit 10.2.120.0 0.0.0.255
 access-list 10 permit 10.2.130.0 0.0.0.255
+access-list 199 permit gre any any
+access-list 199 permit icmp any any
+access-list 199 permit tcp any any established
+access-list 199 deny ip any any
 !
 control-plane
 !

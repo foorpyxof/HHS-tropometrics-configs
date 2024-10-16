@@ -38,7 +38,7 @@ ip ssh time-out 30
 !
 interface FastEthernet0/1
  switchport trunk encapsulation dot1q
- switchport trunk allowed vlan 10,110,120
+ switchport trunk allowed vlan 10,20,30,110,120,130
  switchport mode trunk
 !
 no vstack
